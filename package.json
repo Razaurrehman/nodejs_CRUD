@@ -1,5 +1,5 @@
 {
-  "name": "nodejsapi",
+  "name": "nodejs_crud",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.15.0",
     "cors": "^2.8.5",
@@ -23,7 +23,8 @@
     "express-validator": "^6.2.0",
     "jade": "^1.11.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.1",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.7.5",
     "multer": "^1.4.2",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",

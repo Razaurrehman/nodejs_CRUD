@@ -1,17 +1,10 @@
 const User = require('../models/user');
-const {uploader, sendEmail} = require('../utils/index');
 
-// @route GET admin/user
-// @desc Returns all users
-// @access Public
 exports.index = async function (req, res) {
     const users = await User.find({});
     res.status(200).json({users});
 };
 
-// @route POST api/user
-// @desc Add a new user
-// @access Public
 exports.store = async (req, res) => {
     try {
         const {email} = req.body;
@@ -32,28 +25,14 @@ exports.store = async (req, res) => {
         // Save the updated user object
         await user_.save();
 
-        //Get mail options
-        let domain = "http://" + req.headers.host;
-        let subject = "New Account Created";
-        let to = user.email;
-        let from = process.env.FROM_EMAIL;
-        let link = "http://" + req.headers.host + "/api/auth/reset/" + user.resetPasswordToken;
-        let html = `<p>Hi ${user.username}<p><br><p>A new account has been created for you on ${domain}. Please click on the following <a href="${link}">link</a> to set your password and login.</p> 
-                  <br><p>If you did not request this, please ignore this email.</p>`
-
-        await sendEmail({to, from, subject, html});
-
-        res.status(200).json({message: 'An email has been sent to ' + user.email + '.'});
+        await res.status(200).json({message: 'Account Successfully Created'});
 
     } catch (error) {
         res.status(500).json({success: false, message: error.message})
     }
 };
 
-// @route GET api/user/{id}
-// @desc Returns a specific user
-// @access Public
-exports.show = async function (req, res) {
+exports.show = async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -67,10 +46,7 @@ exports.show = async function (req, res) {
     }
 };
 
-// @route PUT api/user/{id}
-// @desc Update user details
-// @access Public
-exports.update = async function (req, res) {
+exports.update = async (req, res) => {
     try {
         const update = req.body;
         const id = req.params.id;
@@ -84,10 +60,6 @@ exports.update = async function (req, res) {
         //if there is no image, return success message
         if (!req.file) return res.status(200).json({user, message: 'User has been updated'});
 
-        //Attempt to upload to cloudinary
-        const result = await uploader(req);
-        const user_ = await User.findByIdAndUpdate(id, {$set: update}, {$set: {profileImage: result.url}}, {new: true});
-
         if (!req.file) return res.status(200).json({user: user_, message: 'User has been updated'});
 
     } catch (error) {
@@ -95,10 +67,7 @@ exports.update = async function (req, res) {
     }
 };
 
-// @route DESTROY api/user/{id}
-// @desc Delete User
-// @access Public
-exports.destroy = async function (req, res) {
+exports.destroy = async (req, res) => {
     try {
         const id = req.params.id;
         const user_id = req.user._id;
